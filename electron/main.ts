@@ -14,7 +14,7 @@ function createWindow() {
     }
   });
 
-  // продакшн: зібраний index.html
+  // важливо: саме dist/index.html після vite build
   win.loadFile(path.join(__dirname, "../dist/index.html"));
 }
 
