@@ -13,30 +13,32 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup Node
+      # Якщо є lockfile — ставимо Node з кешем
+      - name: Setup Node (with cache)
+        if: ${{ hashFiles('**/package-lock.json') != '' }}
         uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: 'npm'
 
-      - name: Install dependencies
+      # Якщо lockfile НЕТ — ставимо Node без кешу (щоб не падало)
+      - name: Setup Node (no cache)
+        if: ${{ hashFiles('**/package-lock.json') == '' }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install deps
         shell: pwsh
         run: |
           if (Test-Path "package-lock.json") {
-            Write-Host "Found package-lock.json → running npm ci"
             npm ci
           } else {
-            Write-Host "No lockfile → running npm install"
             npm install
           }
 
-      - name: Show versions
-        run: |
-          node -v
-          npm -v
-          npx tsc -v
-
-      - name: Build (Vite + Electron + pack)
+      - name: Build
+        shell: pwsh
         run: npm run build
 
       - name: Upload installer
