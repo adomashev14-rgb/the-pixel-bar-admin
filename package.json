@@ -1,70 +1,52 @@
 {
   "name": "the-pixel-bar-admin",
-  "version": "1.0.0",
-  "description": "Desktop administration app for The Pixel Bar built with Electron and React",
+  "version": "1.1.0",
   "main": "dist-electron/main.js",
-  "author": "",
-  "license": "MIT",
   "scripts": {
-    "typecheck": "tsc --noEmit",
-    "dev": "concurrently -k \"npm:dev:vite\" \"npm:dev:electron\"",
-    "dev:vite": "vite",
-    "dev:electron": "wait-on tcp:5173 && cross-env VITE_DEV_SERVER_URL=http://localhost:5173 electron .",
-    "build": "npm run build:vite && npm run build:electron",
-    "build:vite": "vite build",
     "build:electron": "tsc -p tsconfig.node.json",
-    "postinstall": "electron-builder install-app-deps",
-    "lint": "eslint --ext .ts,.tsx src",
-    "pack": "npm run build && electron-builder --dir",
-    "dist": "npm run build && electron-builder"
+    "build": "vite build && npm run build:electron && electron-builder --win --publish never",
+    "dev": "concurrently -k \"vite\" \"wait-on http://localhost:5173 && electron .\"",
+    "start": "electron ."
   },
   "build": {
     "appId": "com.pixelbar.admin",
-    "productName": "The Pixel Bar Admin",
-    "directories": {
-      "buildResources": "build"
-    },
+    "productName": "Pixel Bar Manager",
     "files": [
       "dist/**",
       "dist-electron/**",
-      "node_modules/**",
+      "electron/**",
       "package.json"
     ],
-    "mac": {
-      "category": "public.app-category.business"
+    "directories": {
+      "buildResources": "build",
+      "output": "dist"
     },
     "win": {
-      "target": [
-        "nsis"
-      ],
+      "target": "nsis",
       "icon": "build/icon.png"
     },
-    "linux": {
-      "target": [
-        "AppImage"
-      ],
-      "category": "Utility"
+    "nsis": {
+      "oneClick": false,
+      "perMachine": true,
+      "allowToChangeInstallationDirectory": true
     }
   },
-  "dependencies": {
-    "date-fns": "^3.6.0",
-    "electron-store": "^9.0.0",
-    "react": "^18.3.1",
-    "react-big-calendar": "^1.8.5",
-    "react-dom": "^18.3.1",
-    "react-router-dom": "^6.23.1",
-    "xlsx": "^0.18.5"
-  },
   "devDependencies": {
+    "@types/node": "^20.11.5",
+    "@vitejs/plugin-react": "^4.3.1",
     "concurrently": "^8.2.2",
-    "cross-env": "^7.0.3",
-    "electron": "^29.3.0",
+    "electron": "^30.0.0",
     "electron-builder": "^24.13.3",
-    "eslint": "^8.57.0",
-    "eslint-config-prettier": "^9.1.0",
-    "eslint-plugin-react": "^7.34.1",
-    "typescript": "^5.4.5",
-    "vite": "^5.2.11",
+    "typescript": "^5.3.3",
+    "vite": "^5.0.8",
     "wait-on": "^7.2.0"
+  },
+  "dependencies": {
+    "dayjs": "^1.11.10",
+    "electron-store": "^8.1.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^6.22.3",
+    "xlsx": "^0.18.5"
   }
 }
