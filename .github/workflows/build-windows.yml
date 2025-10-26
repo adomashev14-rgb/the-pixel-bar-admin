@@ -13,43 +13,30 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Print repo tree (sanity)
-        shell: pwsh
-        run: |
-          Write-Host "=== REPO TREE (TOP) ==="
-          Get-ChildItem -Force
-          Write-Host "=== REPO TREE (electron) ==="
-          if (Test-Path "electron") { Get-ChildItem "electron" -Force } else { Write-Host "no electron dir" }
-          Write-Host "=== REPO TREE (types) ==="
-          if (Test-Path "types") { Get-ChildItem "types" -Recurse -Force } else { Write-Host "no types dir (OK)" }
-          Write-Host "=== PACKAGE.JSON (first 200 lines) ==="
-          Get-Content package.json -TotalCount 200
-
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: 'npm'
 
-      - name: Install deps (ci with fallback)
+      - name: Install dependencies
         shell: pwsh
         run: |
-          npm ci
-          if ($LASTEXITCODE -ne 0) {
-            Write-Host "npm ci failed, falling back to npm install"
+          if (Test-Path "package-lock.json") {
+            Write-Host "Found package-lock.json → running npm ci"
+            npm ci
+          } else {
+            Write-Host "No lockfile → running npm install"
             npm install
-            if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           }
 
       - name: Show versions
-        shell: pwsh
         run: |
           node -v
           npm -v
           npx tsc -v
 
       - name: Build (Vite + Electron + pack)
-        shell: pwsh
         run: npm run build
 
       - name: Upload installer
