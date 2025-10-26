@@ -8,8 +8,9 @@
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
-    "moduleResolution": "Node",
+    "moduleResolution": "Node16",
     "resolveJsonModule": true,
+    "types": ["node"],
     "sourceMap": false
   },
   "include": ["electron/**/*.ts"]
