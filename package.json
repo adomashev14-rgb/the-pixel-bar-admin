@@ -41,12 +41,13 @@
     "vite": "^5.0.8",
     "wait-on": "^7.2.0"
   },
-  "dependencies": {
-    "dayjs": "^1.11.10",
-    "electron-store": "^8.1.0",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "react-router-dom": "^6.22.3",
-    "xlsx": "^0.18.5"
-  }
+ "dependencies": {
+  "conf": "^12.0.0",
+  "electron-store": "^8.1.0",
+  "dayjs": "^1.11.10",
+  "react": "^18.2.0",
+  "react-dom": "^18.2.0",
+  "react-router-dom": "^6.22.3",
+  "xlsx": "^0.18.5"
+}
 }
