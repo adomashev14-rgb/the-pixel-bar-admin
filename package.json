@@ -1,24 +1,27 @@
 {
   "name": "the-pixel-bar-admin",
-  "version": "1.1.0",
-  "description": "Desktop-адмінка The Pixel Bar: керування місцями, бронюванням та звітами.",
+  "version": "1.0.0",
   "main": "dist-electron/main.js",
+  "private": true,
   "scripts": {
     "dev": "concurrently -k \"vite\" \"wait-on http://localhost:5173 && electron .\"",
-    "start": "electron .",
     "build:electron": "tsc -p tsconfig.node.json",
-    "build": "vite build && npm run build:electron && electron-builder --win --publish never"
+    "build": "vite build && npm run build:electron && electron-builder --win --publish never",
+    "start": "electron ."
   },
   "build": {
-  "files": ["dist/**/*", "dist-electron/**/*", "electron/**/*", "package.json"],
-  "directories": { "buildResources": "build" },
-  "win": { "target": "nsis", "icon": "build/icon.png" },
-  "nsis": { "oneClick": false, "perMachine": true, "allowToChangeInstallationDirectory": true }
-},
+    "appId": "com.thepixelbar.manager",
+    "productName": "Pixel Bar Manager",
+    "asar": true,
     "directories": {
-      "buildResources": "build",
-      "output": "dist"
+      "buildResources": "build"
     },
+    "files": [
+      "dist/**/*",
+      "dist-electron/**/*",
+      "electron/**/*",
+      "package.json"
+    ],
     "win": {
       "target": "nsis",
       "icon": "build/icon.png"
@@ -30,27 +33,22 @@
     }
   },
   "dependencies": {
-    "conf": "^12.0.0",
-    "dayjs": "^1.11.10",
+    "concurrently": "^8.2.2",
     "electron-store": "^8.1.0",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "react-router-dom": "^6.22.3",
-    "xlsx": "^0.18.5",
-    "react-big-calendar": "^1.8.2",
-    "date-fns": "^2.30.0"
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-router-dom": "^6.26.1",
+    "react-big-calendar": "^1.8.6"
   },
   "devDependencies": {
-    "@types/node": "^20.11.5",
-    "@types/react": "^18.2.45",
-    "@types/react-dom": "^18.2.18",
-    "@vitejs/plugin-react": "^4.3.1",
-    "concurrently": "^8.2.2",
-    "cross-env": "^7.0.3",
-    "electron": "^30.0.0",
+    "@types/node": "^20.11.30",
+    "@types/react": "^18.3.3",
+    "@types/react-dom": "^18.3.0",
+    "electron": "^29.1.0",
     "electron-builder": "^24.13.3",
-    "typescript": "^5.3.3",
-    "vite": "^5.0.8",
+    "typescript": "^5.4.5",
+    "vite": "^5.1.4",
+    "@vitejs/plugin-react": "^4.3.2",
     "wait-on": "^7.2.0"
   }
 }
