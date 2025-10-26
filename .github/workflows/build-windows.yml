@@ -1,33 +1,55 @@
-name: Build Windows App
+name: Build Windows installer
 
 on:
   push:
-    branches:
-      - main
+    branches: [ "main" ]
   workflow_dispatch:
 
 jobs:
-  build:
+  build-win:
     runs-on: windows-latest
 
     steps:
-      - name: Checkout repository
+      - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
+      - name: Print repo tree (sanity)
+        run: |
+          echo "=== REPO TREE (TOP) ==="
+          dir
+          echo "=== REPO TREE (electron) ==="
+          if exist electron (dir electron) else (echo "no electron dir")
+          echo "=== REPO TREE (types) ==="
+          if exist types (dir types) else (echo "no types dir (OK)")
+          echo "=== PACKAGE.JSON ==="
+          type package.json
+
+      - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: 20
+          cache: 'npm'
 
-      - name: Install dependencies
+      - name: Install deps
         run: npm ci || npm install
 
-      - name: Build project
+      - name: Show TS/Node versions
+        run: |
+          node -v
+          npm -v
+          npx tsc -v
+
+      - name: Build (Vite + Electron + pack)
         run: npm run build
 
-      - name: Upload build artifacts
+      - name: Upload installer
         uses: actions/upload-artifact@v4
         with:
-          name: pixel-bar-windows-build
-          path: dist/
-
+          name: PixelBar-Setup
+          path: |
+            dist/*.exe
+            dist/*.msi
+            dist/*.zip
+            dist/*.7z
+            dist/*.blockmap
+          if-no-files-found: error
