@@ -36,12 +36,6 @@ jobs:
           } else {
             npm install
           }
-- name: Clean old artifacts
-  shell: pwsh
-  run: |
-    if (Test-Path dist) { Remove-Item -Recurse -Force dist }
-    if (Test-Path dist-electron) { Remove-Item -Recurse -Force dist-electron }
-
 
 
       - name: Build
